@@ -64,8 +64,9 @@ if service == "Software":
             st.markdown(f"- **Custo Antes do Lucro:** R$ {values.get('cost_before_profit'):.2f}")
             st.markdown("- **Margem de Lucro Aplicada:** 30%")
             st.markdown(f"- **Valor Final (com lucro):** **R$ {values.get('final_cost'):.2f}**")
-            st.markdown(f"- **Valor para Pagamento com Cartão (acréscimo de 3,29%):** R$ {values.get('final_cost_card'):.2f}")
+            st.markdown(f"- **Valor para Pagamento com Cartão (acréscimo de 5,59%):** R$ {values.get('final_cost_card'):.2f}")
             st.markdown(f"- **Valor para Pagamento por Pix (desconto de 10%):** R$ {values.get('final_cost_pix'):.2f}")
+            st.markdown(f"- **Valor para Manutenção pós término (mensal - pós 3 meses free):** R$ {values.get('maintenance_cost'):.2f}")
 
             st.markdown("---")
             st.markdown("Todos os cálculos acima foram realizados aplicando os ajustes conforme os dados informados, garantindo que o orçamento reflita a complexidade e as necessidades específicas do projeto.")

@@ -1,5 +1,3 @@
-# detalhes_orcamento.py
-
 import streamlit as st
 
 st.title("Detalhes do Cálculo do Orçamento")
@@ -16,6 +14,7 @@ def software_explicacao():
     - **Custos adicionais** (como banco de dados e reuniões)
     - **Ajustes percentuais** baseados em características do projeto (urgência, complexidade, tamanho e experiência da equipe, tecnologia e histórico)
     - **Margem de lucro** aplicada
+    - **Custos de manutenção** (pós entrega)
     - **Ajustes para diferentes formas de pagamento** (cartão e Pix)
 
     Cada etapa foi pensada para refletir a complexidade e as necessidades específicas de cada projeto.
@@ -28,10 +27,10 @@ def software_explicacao():
 
     - **Valor Mínimo Base:** R$ 6.435,00
     - **Custo de Serviço Mensal:** R$ 2.000,00
-                
+              
     - **Custos Adicionais:**
-    - **Banco de Dados:** R$ 1.000,00 (caso seja necessário)
-    - **Reuniões:** R$ 500,00 (caso sejam necessárias)
+      - **Banco de Dados:** R$ 1.000,00 (caso seja necessário)
+      - **Reuniões:** R$ 500,00 (caso sejam necessárias)
 
     **Fórmula do Custo Base:**
 
@@ -53,34 +52,34 @@ def software_explicacao():
     Após definir o custo base, são aplicados ajustes percentuais que refletem as características do projeto:
 
     - **Urgência:**
-    - Imediato: **+10%**
-    - Próximos 3 meses: **0%**
-    - Em breve: **-5%**
+      - Imediato: **+10%**
+      - Próximos 3 meses: **0%**
+      - Em breve: **-5%**
 
     - **Complexidade do Projeto:**
-    - Baixa: **0%**
-    - Média: **+20%**
-    - Alta: **+40%**
+      - Baixa: **0%**
+      - Média: **+20%**
+      - Alta: **+40%**
 
     - **Tamanho da Equipe:**
-    - 1 pessoa: **0%**
-    - 2-5 pessoas: **+10%**
-    - 6-10 pessoas: **+20%**
-    - Mais de 10 pessoas: **+30%**
+      - 1 pessoa: **0%**
+      - 2-5 pessoas: **+10%**
+      - 6-10 pessoas: **+20%**
+      - Mais de 10 pessoas: **+30%**
 
     - **Experiência da Equipe:**
-    - Iniciante: **+15%**
-    - Intermediário: **0%**
-    - Avançado: **-10%**
+      - Iniciante: **+15%**
+      - Intermediário: **0%**
+      - Avançado: **-10%**
 
     - **Plataforma/Tecnologia:**
-    - Web: **0%**
-    - Mobile ou Desktop: **+10%**
-    - Todas: **+20%**
+      - Web: **0%**
+      - Mobile ou Desktop: **+10%**
+      - Todas: **+20%**
 
     - **Experiência Tecnológica Anterior:**
-    - Se já investiu em soluções de tecnologia: **-5%**
-    - Caso contrário: **0%**
+      - Se já investiu em soluções de tecnologia: **-5%**
+      - Caso contrário: **0%**
 
     **Fórmula para o Custo Ajustado:**
 
@@ -114,21 +113,51 @@ def software_explicacao():
     São calculados os valores finais para duas formas de pagamento:
 
     - **Pagamento com Cartão:**  
-    Acrescenta-se uma taxa de **3,29%** para pagamento via cartão (até 12x sem juros).
+      Acrescenta-se uma taxa de **5,59%** para pagamento via cartão (até 12x sem juros).
 
-    **Fórmula:**
+      **Fórmula:**
 
-    $$
-    \text{Valor com Cartão} = \text{Valor Final} \times 1.0329
-    $$
+      $$
+      \text{Valor com Cartão} = \text{Valor Final} \times 1.0559
+      $$
 
     - **Pagamento por Pix:**  
-    Aplica-se um desconto de **10%** para pagamento via Pix.
+      Aplica-se um desconto de **10%** para pagamento via Pix.
 
-    **Fórmula:**
+      **Fórmula:**
+
+      $$
+      \text{Valor com Pix} = \text{Valor Final} \times 0.90
+      $$
+
+    ---
+
+    ## 5. Cálculo de Custos de Manutenção
+
+    Para a manutenção do software após a entrega do projeto, é considerado um custo mensal recorrente ajustado com base na tecnologia desejada e na necessidade de banco de dados.
+
+    - **Valor Base de Manutenção:** R$ 97,00
+
+    - **Ajuste pela Tecnologia:**
+      - Se a plataforma for **Web**: Fator 1.0
+      - Se a plataforma for **Mobile** ou **Desktop**: Fator 1.2
+      - Se a plataforma for **Todas**: Fator 1.4
+
+    - **Ajuste para Banco de Dados:**
+      - Se há necessidade de banco de dados: Fator 1.1
+      - Caso contrário: Fator 1.0
+
+    **Fórmula para o Custo de Manutenção:**
 
     $$
-    \text{Valor com Pix} = \text{Valor Final} \times 0.90
+    \text{Custo Manutenção} = \text{Valor Base de Manutenção} \times \text{Fator de Tecnologia} \times \text{Fator Banco de Dados}
+    $$
+
+    *Exemplo:*  
+    Para um projeto com plataforma Mobile (Fator 1.2) e necessidade de banco de dados (Fator 1.1):
+
+    $$
+    \text{Custo Manutenção} = 97,00 \times 1.2 \times 1.1 \approx 128,04
     $$
 
     ---
@@ -154,14 +183,19 @@ def software_explicacao():
     $$
 
     4. **Cálculos para Formas de Pagamento:**
-    - **Cartão:**
-            $$ 
-            \text{Valor Final} \times 1.0329
-            $$
-    - **Pix:** 
-            $$ 
-            \text{Valor Final} \times 0.90
-            $$
+       - **Cartão:**
+         $$ 
+         \text{Valor Final} \times 1.0559
+         $$
+       - **Pix:** 
+         $$ 
+         \text{Valor Final} \times 0.90
+         $$
+
+    5. **Cálculo de Custos de Manutenção:**
+       $$
+       \text{Custo Manutenção} = 97,00 \times \text{Fator de Tecnologia} \times \text{Fator Banco de Dados}
+       $$
 
     Cada etapa foi desenvolvida para garantir que o valor do orçamento reflita não só os custos operacionais, mas também a complexidade e as especificidades do projeto, mantendo sempre o valor mínimo estipulado e assegurando a margem de lucro desejada.
 
@@ -173,8 +207,7 @@ def software_explicacao():
     """)
 
 def id_visual_explicacao():
-    st.text("Identidade Visual" + "Em breve")
-
+    st.text("Identidade Visual - Em breve")
 
 if service == "Software":
     software_explicacao()
