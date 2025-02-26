@@ -3,14 +3,14 @@ def calcular_orcamento(inputs):
     Calcula o orçamento com base nos inputs informados e regras:
       - Valor mínimo de base: R$ 6.435,00
       - Custo de serviço: R$ 2.000,00 por mês
+      - Custos adicionais (banco de dados e reuniões)
       - Ajustes percentuais conforme os dados (urgência, complexidade, tamanho e experiência da equipe, plataforma e experiência com tecnologia)
-      - Adiciona custos fixos para banco de dados (R$ 1.000,00) e reuniões (R$ 500,00), se selecionados.
-      - Aplica lucro mínimo de 30%
-      - Calcula o valor final para pagamento com cartão (acréscimo de 3,29%) e com pix (desconto de 10%)
-    
-    Retorna um dicionário (JSON) com todos os detalhes dos cálculos.
+      - Aplicação de uma margem de lucro de 30%
+      - Cálculos de valores para pagamento com cartão (acréscimo de 3,29%) e por Pix (desconto de 10%)
+      - Cálculo do custo de manutenção: valor base de R$ 97,00, ajustado conforme a tecnologia desejada e se há necessidade de banco de dados
+    Retorna um dicionário (JSON) com os detalhes dos cálculos.
     """
-    # Constantes
+    # Constantes iniciais
     base_minimum = 6435.00
     service_cost_per_month = 2000.00
 
@@ -35,8 +35,6 @@ def calcular_orcamento(inputs):
     base_cost = base_minimum + base_service_cost + database_cost + meeting_cost
 
     # Ajustes percentuais conforme os inputs:
-
-    # Urgência
     urgency = inputs.get("urgency")
     if urgency == "Imediato":
         urgency_adj = 0.10   # +10%
@@ -47,7 +45,6 @@ def calcular_orcamento(inputs):
     else:
         urgency_adj = 0.0
 
-    # Complexidade do projeto
     complexit = inputs.get("complexit")
     if complexit == "Baixa":
         complexity_adj = 0.0
@@ -58,7 +55,6 @@ def calcular_orcamento(inputs):
     else:
         complexity_adj = 0.0
 
-    # Tamanho da equipe
     team_size = inputs.get("team_size")
     if team_size == "1 pessoa":
         team_size_adj = 0.0
@@ -71,7 +67,6 @@ def calcular_orcamento(inputs):
     else:
         team_size_adj = 0.0
 
-    # Experiência da equipe
     team_exp = inputs.get("team_exp")
     if team_exp == "Iniciante":
         team_exp_adj = 0.15  # +15%
@@ -82,7 +77,6 @@ def calcular_orcamento(inputs):
     else:
         team_exp_adj = 0.0
 
-    # Plataforma escolhida
     platform = inputs.get("app_plataform")
     if platform in ["Mobile", "Desktop"]:
         platform_adj = 0.10
@@ -91,7 +85,6 @@ def calcular_orcamento(inputs):
     else:  # "Web"
         platform_adj = 0.0
 
-    # Experiência anterior com soluções tecnológicas
     tech_sol = inputs.get("tecnologic_solution")
     if tech_sol == "Sim":
         technologic_solution_adj = -0.05  # -5%
@@ -112,12 +105,33 @@ def calcular_orcamento(inputs):
     final_cost = cost_after_adjustment * (1 + profit_margin)
 
     # Cálculo dos valores finais para as formas de pagamento:
-    # Valor para pagamento com cartão (acréscimo de 3,29%)
-    card_fee = 0.0329
+    # Pagamento com cartão (acréscimo de 5,59%)
+    card_fee = 0.0559
     final_cost_card = final_cost * (1 + card_fee)
-    # Valor para pagamento por pix (desconto de 10%)
+    # Pagamento por Pix (desconto de 10%)
     pix_discount = 0.10
     final_cost_pix = final_cost * (1 - pix_discount)
+
+    # ---------------------------------------------------------
+    # Cálculo do Custo de Manutenção
+    # Valor base de manutenção
+    maintenance_base = 97.00
+
+    # Ajuste baseado na tecnologia desejada
+    if platform == "Web":
+        tech_factor = 1.0
+    elif platform in ["Mobile", "Desktop"]:
+        tech_factor = 1.2
+    elif platform == "Todas":
+        tech_factor = 1.4
+    else:
+        tech_factor = 1.0
+
+    # Ajuste se há necessidade de banco de dados
+    database_factor = 1.1 if inputs.get("need_database") == "Sim" else 1.0
+
+    # Cálculo final da manutenção
+    maintenance_cost = maintenance_base * tech_factor * database_factor
 
     # Monta o output JSON detalhado
     output = {
@@ -141,6 +155,7 @@ def calcular_orcamento(inputs):
         "profit_margin": profit_margin,
         "final_cost": round(final_cost, 2),
         "final_cost_card": round(final_cost_card, 2),
-        "final_cost_pix": round(final_cost_pix, 2)
+        "final_cost_pix": round(final_cost_pix, 2),
+        "maintenance_cost": round(maintenance_cost, 2)
     }
     return output
